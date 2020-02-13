@@ -18,12 +18,23 @@ const calculateHead2Head = (player, matches) => {
     let obj = {}
     filteredMatches.forEach(match => {
         if (obj[match.loser]) {
-            obj[match.loser] = obj[match.loser] += 1
+            obj[match.loser] = {
+                wins: (obj[match.loser].wins += 1),
+                losses: findLossesAgainstPlayer(player, matches, match.loser),
+            }
         } else {
-            obj[match.loser] = 1
+            obj[match.loser] = {
+                wins: 1,
+                losses: findLossesAgainstPlayer(player, matches, match.loser),
+            }
         }
     })
     return obj
+}
+
+const findLossesAgainstPlayer = (player, matches, opponent) => {
+    const filteredMatches = matches.filter(match => player.name === match.loser)
+    return filteredMatches.filter(match => match.winner === opponent).length
 }
 
 export const LeagueTable = ({ players, matches }) => {
@@ -61,8 +72,20 @@ export const LeagueTable = ({ players, matches }) => {
                     </tr>
                     {head2Head[player.name] ? (
                         <tr>
-                            <td>players results will appear here...</td>
-                            {console.log(calculateHead2Head(player, matches), 'calculating h2h')}
+                            {/* <td>players results will appear here...</td> */}
+                            {/* {console.log(calculateHead2Head(player, matches), 'calculating h2h')} */}
+                            <table style={{ width: '400px' }}>
+                                <th>Player</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                                {Object.keys(calculateHead2Head(player, matches)).map(key => (
+                                    <tr>
+                                        <td>{`${key}`}</td>
+                                        <td>{`${calculateHead2Head(player, matches)[key].wins}`}</td>
+                                        <td>{`${calculateHead2Head(player, matches)[key].losses}`}</td>
+                                    </tr>
+                                ))}
+                            </table>
                         </tr>
                     ) : null}
                 </>
