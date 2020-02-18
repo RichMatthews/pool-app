@@ -72,8 +72,6 @@ export const LeagueTable = ({ players, matches }) => {
                     </tr>
                     {head2Head[player.name] ? (
                         <tr>
-                            {/* <td>players results will appear here...</td> */}
-                            {/* {console.log(calculateHead2Head(player, matches), 'calculating h2h')} */}
                             <table style={{ width: '400px' }}>
                                 <th>Player</th>
                                 <th>Wins</th>

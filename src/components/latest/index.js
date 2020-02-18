@@ -4,7 +4,6 @@ import { findUserImage } from 'utils/findUserImage'
 
 export const Latest = ({ matches, players }) => {
     const slicedMatches = [...matches].reverse()
-    console.log(slicedMatches.slice(0, 3))
     return (
         <div>
             {slicedMatches &&

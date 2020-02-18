@@ -18,39 +18,6 @@ const ButtonContainer = styled.div`
     justifycontent: center;
 `
 
-// For each unique player?
-// Loop over matches?
-// Did I play?
-// Who was it against?
-// Did I win?
-
-// {
-//   "head-to-head-wins": [
-//     "rich": {
-//       "kieran": 1,
-//       "vitor": 3,
-//       "graeme": 2
-//     },
-//     "kieran": {
-//       "rich": 2,
-//       "vitor": 1
-//     }
-//   ]
-// }
-
-// How do I see my win rate against x player
-// For each player
-// Get key and value
-// Key = opponent name
-// Find opponent name in object
-// Get value
-
-// return "Rich: head-to-head-wins["rich"]["kieran"] : ["kieran"]["rich"] Kieran"
-// Rich 5 : 2 Kieran
-// Rich 2 : 1 vitor
-// ...
-// Kieran 3: 0 vitor
-
 export const Home = ({ matches, players }) => {
     return (
         <Container>

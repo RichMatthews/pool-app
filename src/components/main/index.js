@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { navigate, Router } from '@reach/router'
+import { navigate, Redirect, Router } from '@reach/router'
 import moment from 'moment'
+import firebase from 'firebase'
+
 import { firebaseApp } from '../../config'
 import { Home } from 'components/home'
 import { Record } from 'components/record'
 import { LeagueTable } from 'components/league'
-import { Latest } from 'components/latest'
+import { Login } from 'components/login'
+import { Nav } from 'components/nav'
 
 const H1 = styled.h1`
     color: #fff;
@@ -21,9 +24,51 @@ const H6 = styled.h6`
     margin-bottom: 25px;
 `
 
+const Container = styled.div`
+    display: flex;
+    height: 100%;
+`
+
+const InnerContainer = styled.div`
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+`
+
+const isUserSignedIn = () => {}
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+    // firebaseApp.auth().onAuthStateChanged(user => {
+    //     if (user) {
+    //         return <Component {...rest} />
+    //     } else {
+    //         return <Redirect from="" to="/login" noThrow />
+    //     }
+    // })
+    const Auth = false
+}
+
+const authenticateUser = async () => {
+    const email = 'richjmatt26@gmail.com'
+    const password = 'test1234'
+    await firebaseApp
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}
+
 export const Main = () => {
     const [players, setPlayers] = useState([])
     const [matches, setMatches] = useState([])
+    const [menuHidden, toggleMenu] = useState(true)
 
     useEffect(() => {
         const playersRef = firebaseApp.database().ref('/players')
@@ -83,14 +128,28 @@ export const Main = () => {
     }
 
     return (
-        <div>
-            <H1> Pool </H1>
-            <H6> Championships </H6>
-            <Router>
-                <Home path="/" matches={matches} players={players} />
-                <Record path="/record" submitResult={submitResult} />
-                <LeagueTable path="/league-table" matches={matches} players={players} />
-            </Router>
-        </div>
+        <Container>
+            <Nav menuHidden={menuHidden} toggleMenu={toggleMenu} />
+            <InnerContainer>
+                <div>
+                    <div>
+                        <p
+                            style={{ color: '#fff', position: 'fixed', left: 0, marginLeft: '25px' }}
+                            onClick={() => toggleMenu(!menuHidden)}
+                        >
+                            Menu
+                        </p>
+                        <H1> Pool </H1>
+                    </div>
+                    <H6> Championships </H6>
+                </div>
+                <Router>
+                    <Home path="/" matches={matches} players={players} />
+                    <Record path="/record" component={Record} submitResult={submitResult} />
+                    <LeagueTable path="/league-table" matches={matches} players={players} />
+                    <Login path="/login" />
+                </Router>
+            </InnerContainer>
+        </Container>
     )
 }
