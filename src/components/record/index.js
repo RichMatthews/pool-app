@@ -7,6 +7,7 @@ const options = [
     { value: 'Vitor', label: 'Vitor' },
     { value: 'Kieran', label: 'Kieran' },
     { value: 'Graeme', label: 'Graeme' },
+    { value: 'Georgios', label: 'Georgios' },
 ]
 
 const Container = styled.div`
