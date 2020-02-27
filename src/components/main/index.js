@@ -132,13 +132,13 @@ export const Main = () => {
             <Nav menuHidden={menuHidden} toggleMenu={toggleMenu} />
             <InnerContainer>
                 <div>
-                    <div>
-                        <p
-                            style={{ color: '#fff', position: 'fixed', left: 0, marginLeft: '25px' }}
-                            onClick={() => toggleMenu(!menuHidden)}
-                        >
-                            Menu
-                        </p>
+                    <p
+                        style={{ color: '#fff', position: 'fixed', left: 0, marginLeft: '25px', cursor: 'pointer'}}
+                        onClick={() => toggleMenu(!menuHidden)}
+                    >
+                        Menu
+                    </p>
+                    <div style={{ marginTop: '2rem'}}>
                         <H1> Pool </H1>
                     </div>
                     <H6> Championships </H6>

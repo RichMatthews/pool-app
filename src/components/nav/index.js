@@ -5,7 +5,6 @@ import { Link } from '@reach/router'
 const Container = styled.div`
     transition: 1s;
     background: #34608a;
-    padding: 5px;
     display: flex;
     flex-direction: column;
     min-width: 100px;

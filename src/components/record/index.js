@@ -13,15 +13,16 @@ const options = [
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
 `
 
 const customStyles = {
     container: (base, state) => ({
         ...base,
-        marginBottom: '20px',
+        fontSize: '18px',
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        width: '100%',
     }),
 }
 
@@ -32,15 +33,28 @@ export const Record = ({ submitResult }) => {
     return (
         <Container>
             <p style={{ color: '#fff' }}> Enter new result </p>
-            <div style={{ width: '150px' }}>
+            <div>
                 <Select styles={customStyles} options={options} placeholder="winner" onChange={val => setWinner(val)} />
             </div>
-            <div style={{ width: '150px' }}>
+            <div>
                 <Select styles={customStyles} options={options} placeholder="loser" onChange={val => setLoser(val)} />
             </div>
             <button
                 disabled={winner.value === loser.value || winner === '' || loser === ''}
                 onClick={() => submitResult(winner.value, loser.value)}
+                style={{
+                    background: "linear-gradient(90deg, #64c899 0%,#10cb75 100%)",
+                    border: 'none',
+                    color: '#fff',
+                    borderRadius: '8px',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    marginTop: '1rem',
+                    marginBottom: '10px',
+                    height: '60px',
+                    width: '305px',
+                    cursor: 'pointer'
+                }}
             >
                 Submit Result
             </button>

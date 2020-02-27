@@ -23,36 +23,45 @@ export const Home = ({ matches, players }) => {
         <Container>
             <div>
                 <ButtonContainer>
-                    <button
-                        style={{
-                            backgroundColor: '#64C899',
-                            border: 'none',
-                            color: '#fff',
-                            borderRadius: '8px',
-                            fontSize: '18px',
-                            marginBottom: '10px',
-                            height: '60px',
-                            width: '305px',
-                        }}
-                    >
-                        <Link to="record">Record new game</Link>
+                    <Link to="record">
+                        <button
+                            style={{
+                                background: "linear-gradient(90deg, #64c899 0%,#10cb75 100%)",
+                                border: 'none',
+                                color: '#fff',
+                                borderRadius: '8px',
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                marginBottom: '10px',
+                                height: '60px',
+                                width: '305px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                        Record new game
                     </button>
-                    <button
-                        style={{
-                            backgroundColor: '#C8C464',
-                            border: 'none',
-                            color: '#fff',
-                            borderRadius: '8px',
-                            fontSize: '18px',
-                            marginBottom: '10px',
-                            height: '60px',
-                            width: '305px',
-                        }}
-                    >
-                        <Link to="league-table">View League Table</Link>
-                    </button>
+                    </Link>
+                    <Link to="league-table">
+                        <button
+                            style={{
+                                background: "linear-gradient(90deg, #FEF637 0%,#E28A06 100%)",
+                                border: 'none',
+                                color: '#fff',
+                                borderRadius: '8px',
+                                fontWeight: 'bold',
+                                fontSize: '18px',
+                                marginTop: '1rem',
+                                marginBottom: '10px',
+                                height: '60px',
+                                width: '305px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            View League Table
+                        </button>
+                    </Link>
 
-                    <p style={{ color: '#fff' }}>LATEST RESULTS</p>
+                    <p style={{ color: '#fff', fontSize: '0.75rem', display: 'block', marginTop: '3rem' }}>LATEST RESULTS</p>
                     <Latest matches={matches} players={players} />
                 </ButtonContainer>
             </div>
