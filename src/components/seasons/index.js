@@ -9,17 +9,6 @@ const Container = styled.div`
     color: #fff;
 `
 
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justifycontent: center;
-`
-
-const ImageContainer = styled.div`
-    display: flex;
-`
-
 const Game = styled.div`
     display: flex;
     flex-direction: row;
@@ -28,7 +17,7 @@ const Game = styled.div`
     width: 150px;
 `
 
-export const Seasons = ({ matches, players }) => {
+export const Seasons = () => {
     return (
         <Container>
             <h2>Season One</h2>
@@ -38,20 +27,20 @@ export const Seasons = ({ matches, players }) => {
             <h3 style={{ color: '#cd7f32' }}> 3rd place - Vitor</h3>
             <h4>Final</h4>
             <Game>
-                <img src={'/images/rich.svg'} />
+                <img src={'/images/rich.svg'} alt="" />
                 3:1
-                <img src={'/images/kieran.svg'} />
+                <img src={'/images/kieran.svg'} alt="" />
             </Game>
             <h4>Semi Finals</h4>
             <Game style={{ marginBottom: '10px' }}>
-                <img src={'/images/rich.svg'} />
+                <img src={'/images/rich.svg'} alt="" />
                 2:0
-                <img src={'/images/georgios.svg'} />
+                <img src={'/images/georgios.svg'} alt="" />
             </Game>
             <Game>
-                <img src={'/images/kieran.svg'} />
+                <img src={'/images/kieran.svg'} alt="" />
                 2:1
-                <img src={'/images/vitor.svg'} />
+                <img src={'/images/vitor.svg'} alt="" />
             </Game>
         </Container>
     )

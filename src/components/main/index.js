@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { navigate, Redirect, Router } from '@reach/router'
+import { navigate, Router } from '@reach/router'
 import moment from 'moment'
-import firebase from 'firebase'
 
 import { firebaseApp } from '../../config'
 import { Home } from 'components/home'
@@ -40,21 +39,27 @@ const InnerContainer = styled.div`
     width: 100%;
 `
 
+const CURRENT_SEASON = 1
+
 export const Main = () => {
-    const [players, setPlayers] = useState([])
     const [matches, setMatches] = useState([])
+    const [seasonPlayers, setSeasonPlayers] = useState([])
     const [menuHidden, toggleMenu] = useState(true)
 
     useEffect(() => {
-        const playersRef = firebaseApp.database().ref('/players')
-        const matchesRef = firebaseApp.database().ref('/seasons')
+        const getCurrentSeasonMatches = firebaseApp.database().ref(`/seasons/${CURRENT_SEASON}/matches`)
+        const getCurrentSeasonPlayers = firebaseApp.database().ref(`/seasons/${CURRENT_SEASON}/players`)
 
         async function fetchData() {
-            await playersRef.once('value', snapshot => {
-                setPlayers(snapshot.val())
+            await getCurrentSeasonMatches.once('value', snapshot => {
+                if (snapshot.val()) {
+                    setMatches(snapshot.val())
+                }
             })
-            await matchesRef.once('value', snapshot => {
-                setMatches(snapshot.val()[0].matches)
+            await getCurrentSeasonPlayers.once('value', snapshot => {
+                if (snapshot.val()) {
+                    setSeasonPlayers(snapshot.val())
+                }
             })
         }
 
@@ -64,7 +69,7 @@ export const Main = () => {
     const submitResultToFirebase = updatedPlayers => {
         firebaseApp
             .database()
-            .ref('/players')
+            .ref(`/seasons/${CURRENT_SEASON}/players`)
             .set(updatedPlayers)
     }
 
@@ -73,7 +78,7 @@ export const Main = () => {
 
         firebaseApp
             .database()
-            .ref('/matches')
+            .ref(`/seasons/${CURRENT_SEASON}/matches`)
             .set(updatedMatches)
     }
 
@@ -87,7 +92,7 @@ export const Main = () => {
     }
 
     const submitResult = async (winner, loser) => {
-        const updatedPlayers = players
+        const updatedPlayers = seasonPlayers
         const updateWinner = updatedPlayers.find(player => player.name === winner)
         const updateLoser = updatedPlayers.find(player => player.name === loser)
         updateWinner.won = updateWinner.won += 1
@@ -126,9 +131,14 @@ export const Main = () => {
                     <H6> Championships </H6>
                 </div>
                 <Router>
-                    <Home path="/" matches={matches} players={players} />
+                    <Home path="/" matches={matches} seasonPlayers={seasonPlayers} />
                     <Record path="/record" component={Record} submitResult={submitResult} />
-                    <LeagueTable path="/league-table" matches={matches} players={players} />
+                    <LeagueTable
+                        path="/league-table"
+                        matches={matches}
+                        seasonPlayers={seasonPlayers}
+                        seasonPlayers={seasonPlayers}
+                    />
                     <Login path="/login" />
                     <Seasons path="/seasons" />
                 </Router>

@@ -38,7 +38,7 @@ const findLossesAgainstPlayer = (player, matches, opponent) => {
     return filteredMatches.filter(match => match.winner === opponent).length
 }
 
-export const LeagueTable = ({ players, matches }) => {
+export const LeagueTable = ({ matches, seasonPlayers }) => {
     const head2HeadState = {
         rich: false,
         kieran: false,
@@ -56,7 +56,7 @@ export const LeagueTable = ({ players, matches }) => {
                 <th>WON</th>
                 <th>WIN RATE</th>
             </tr>
-            {players.map(player => (
+            {seasonPlayers.map(player => (
                 <>
                     <tr>
                         <td>
@@ -69,7 +69,12 @@ export const LeagueTable = ({ players, matches }) => {
                         </td>
                         <td>{player.won + player.lost}</td>
                         <td>{player.won}</td>
-                        <td>{((player.won / (player.won + player.lost)) * 100).toFixed(2)}%</td>
+                        <td>
+                            {!isNaN((player.won / (player.won + player.lost)) * 100)
+                                ? ((player.won / (player.won + player.lost)) * 100).toFixed(2)
+                                : 0}
+                            %
+                        </td>
                     </tr>
                     {head2Head[player.name] ? (
                         <tr>
@@ -77,13 +82,17 @@ export const LeagueTable = ({ players, matches }) => {
                                 <th>Player</th>
                                 <th>Wins</th>
                                 <th>Losses</th>
-                                {Object.keys(calculateHead2Head(player, matches)).map(key => (
-                                    <tr>
-                                        <td>{`${key}`}</td>
-                                        <td>{`${calculateHead2Head(player, matches)[key].wins}`}</td>
-                                        <td>{`${calculateHead2Head(player, matches)[key].losses}`}</td>
-                                    </tr>
-                                ))}
+                                {matches ? (
+                                    Object.keys(calculateHead2Head(player, matches)).map(key => (
+                                        <tr>
+                                            <td>{`${key}`}</td>
+                                            <td>{`${calculateHead2Head(player, matches)[key].wins}`}</td>
+                                            <td>{`${calculateHead2Head(player, matches)[key].losses}`}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <p>No matches recorded so far</p>
+                                )}
                             </table>
                         </tr>
                     ) : null}

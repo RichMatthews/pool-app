@@ -13,17 +13,18 @@ const Game = styled.div`
     width: 150px;
 `
 
-export const Latest = ({ matches, players }) => {
+export const Latest = ({ matches, seasonPlayers }) => {
     const slicedMatches = [...matches].reverse()
     return (
         <div>
-            {slicedMatches &&
+            {slicedMatches.length ? (
                 slicedMatches.slice(0, 5).map(match => {
-                    const winnerImage = findUserImage(match.winner, players)
-                    const loserImage = findUserImage(match.loser, players)
+                    const winnerImage = findUserImage(match.winner, seasonPlayers)
+                    const loserImage = findUserImage(match.loser, seasonPlayers)
                     return (
                         <Game>
                             <img
+                                alt=""
                                 src={winnerImage}
                                 style={{
                                     verticalAlign: 'middle',
@@ -32,14 +33,18 @@ export const Latest = ({ matches, players }) => {
                                     marginRight: '0.5rem',
                                 }}
                             />
-                            beat
+                            defeated
                             <img
+                                alt=""
                                 src={loserImage}
                                 style={{ verticalAlign: 'middle', height: '2rem', width: '2rem', marginLeft: '0.5rem' }}
                             />
                         </Game>
                     )
-                })}
+                })
+            ) : (
+                <p style={{ color: '#fff' }}>The season has not started yet</p>
+            )}
         </div>
     )
 }

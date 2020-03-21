@@ -1,3 +1,5 @@
 export const findUserImage = (user, players) => {
-    return players.find(player => player.name === user).image
+    if (players.length) {
+        return players.find(player => player.name === user).image
+    }
 }

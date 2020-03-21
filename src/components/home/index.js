@@ -18,7 +18,7 @@ const ButtonContainer = styled.div`
     justifycontent: center;
 `
 
-export const Home = ({ matches, players }) => {
+export const Home = ({ matches, seasonPlayers }) => {
     return (
         <Container>
             <div>
@@ -26,7 +26,7 @@ export const Home = ({ matches, players }) => {
                     <Link to="record">
                         <button
                             style={{
-                                background: "linear-gradient(90deg, #64c899 0%,#10cb75 100%)",
+                                background: 'linear-gradient(90deg, #64c899 0%,#10cb75 100%)',
                                 border: 'none',
                                 color: '#fff',
                                 borderRadius: '8px',
@@ -35,16 +35,16 @@ export const Home = ({ matches, players }) => {
                                 marginBottom: '10px',
                                 height: '60px',
                                 width: '305px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
                             }}
                         >
-                        Record new game
-                    </button>
+                            Record new game
+                        </button>
                     </Link>
                     <Link to="league-table">
                         <button
                             style={{
-                                background: "linear-gradient(90deg, #FEF637 0%,#E28A06 100%)",
+                                background: 'linear-gradient(90deg, #FEF637 0%,#E28A06 100%)',
                                 border: 'none',
                                 color: '#fff',
                                 borderRadius: '8px',
@@ -54,15 +54,15 @@ export const Home = ({ matches, players }) => {
                                 marginBottom: '10px',
                                 height: '60px',
                                 width: '305px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
                             }}
                         >
                             View League Table
                         </button>
                     </Link>
 
-                    <p style={{ color: '#fff', fontSize: '0.75rem', display: 'block', marginTop: '3rem' }}>LATEST RESULTS</p>
-                    <Latest matches={matches} players={players} />
+                    <h3 style={{ color: '#fff', marginTop: '3rem' }}>LATEST RESULTS</h3>
+                    <Latest matches={matches} seasonPlayers={seasonPlayers} />
                 </ButtonContainer>
             </div>
         </Container>
