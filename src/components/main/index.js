@@ -10,6 +10,7 @@ import { Record } from 'components/record'
 import { LeagueTable } from 'components/league'
 import { Login } from 'components/login'
 import { Nav } from 'components/nav'
+import { Seasons } from 'components/seasons'
 
 const H1 = styled.h1`
     color: #fff;
@@ -26,6 +27,7 @@ const H6 = styled.h6`
 
 const Container = styled.div`
     display: flex;
+    flex-direction: row;
     height: 100%;
 `
 
@@ -38,33 +40,6 @@ const InnerContainer = styled.div`
     width: 100%;
 `
 
-const isUserSignedIn = () => {}
-
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-    // firebaseApp.auth().onAuthStateChanged(user => {
-    //     if (user) {
-    //         return <Component {...rest} />
-    //     } else {
-    //         return <Redirect from="" to="/login" noThrow />
-    //     }
-    // })
-    const Auth = false
-}
-
-const authenticateUser = async () => {
-    const email = 'richjmatt26@gmail.com'
-    const password = 'test1234'
-    await firebaseApp
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then(() => {
-            return true
-        })
-        .catch(() => {
-            return false
-        })
-}
-
 export const Main = () => {
     const [players, setPlayers] = useState([])
     const [matches, setMatches] = useState([])
@@ -72,14 +47,14 @@ export const Main = () => {
 
     useEffect(() => {
         const playersRef = firebaseApp.database().ref('/players')
-        const matchesRef = firebaseApp.database().ref('/matches')
+        const matchesRef = firebaseApp.database().ref('/seasons')
 
         async function fetchData() {
             await playersRef.once('value', snapshot => {
                 setPlayers(snapshot.val())
             })
             await matchesRef.once('value', snapshot => {
-                setMatches(snapshot.val())
+                setMatches(snapshot.val()[0].matches)
             })
         }
 
@@ -106,14 +81,19 @@ export const Main = () => {
         return navigate('/league-table')
     }
 
-    const submitResult = (winner, loser) => {
+    const sendToSlack = (winner, loser) => {
+        const message = `${winner} just beat ${loser}`
+        const channel = 'pool-world-champs'
+    }
+
+    const submitResult = async (winner, loser) => {
         const updatedPlayers = players
         const updateWinner = updatedPlayers.find(player => player.name === winner)
         const updateLoser = updatedPlayers.find(player => player.name === loser)
         updateWinner.won = updateWinner.won += 1
         updateLoser.lost = updateLoser.lost += 1
 
-        submitResultToFirebase(updatedPlayers)
+        await submitResultToFirebase(updatedPlayers)
 
         const match = {
             winner,
@@ -122,7 +102,9 @@ export const Main = () => {
             date: moment(Date.now()).format('DD/MM/YYYY'),
         }
 
-        submitNewMatchToFirebase(match)
+        await submitNewMatchToFirebase(match)
+
+        await sendToSlack(winner, loser)
 
         redirectToTable()
     }
@@ -133,12 +115,12 @@ export const Main = () => {
             <InnerContainer>
                 <div>
                     <p
-                        style={{ color: '#fff', position: 'fixed', left: 0, marginLeft: '25px', cursor: 'pointer'}}
+                        style={{ color: '#fff', position: 'fixed', left: 0, marginLeft: '25px', cursor: 'pointer' }}
                         onClick={() => toggleMenu(!menuHidden)}
                     >
                         Menu
                     </p>
-                    <div style={{ marginTop: '2rem'}}>
+                    <div style={{ marginTop: '2rem' }}>
                         <H1> Pool </H1>
                     </div>
                     <H6> Championships </H6>
@@ -148,6 +130,7 @@ export const Main = () => {
                     <Record path="/record" component={Record} submitResult={submitResult} />
                     <LeagueTable path="/league-table" matches={matches} players={players} />
                     <Login path="/login" />
+                    <Seasons path="/seasons" />
                 </Router>
             </InnerContainer>
         </Container>
